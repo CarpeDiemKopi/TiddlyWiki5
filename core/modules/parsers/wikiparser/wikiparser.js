@@ -117,6 +117,7 @@ WikiParser.prototype.instantiateRules = function(classes,type,startPos) {
 		rule.is = {};
 		rule.is[type] = true;
 		rule.init(self);
+        console.log("wikiparser.js 120 Cd.K rule.matchRegExp.soure: %s", rule.matchRegExp.soure)
 		var matchIndex = rule.findNextMatch(startPos);
 		if(matchIndex !== undefined) {
 			rulesInfo.push({
