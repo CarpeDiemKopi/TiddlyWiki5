@@ -117,10 +117,20 @@ WikiParser.prototype.instantiateRules = function(classes,type,startPos) {
 		rule.is = {};
 		rule.is[type] = true;
 		rule.init(self);
-        console.log("wikiparser.js 120 Cd.K rule.matchRegExp: %s", rule.matchRegExp)
-		var matchIndex = rule.findNextMatch(startPos);
+        var matchIndex = rule.findNextMatch(startPos);
 		if(matchIndex !== undefined) {
-			rulesInfo.push({
+            var compRegExp = /~?(?:file|http|https|mailto|ftp|irc|news|data|skype|npp):[^\s<>{}\[\]`|"\\^]+(?:\/|\b)/mg;  // extlink.js
+                        //   / ^(?:file|http|https|mailto|ftp|irc|news|data|skype|npp):[^\s<>{}\[\]`|"\\^]+(?:\/|\b)/i    // utils.js
+            if (rule.matchRegExp !== undefined) {
+                // search for string "npp" in rule.matchRegExp.source
+                if (rule.matchRegExp.source == compRegExp.source) {
+                    debugger
+                    console.log("wikiparser.js 128 Cd.K rule.matchRegExp: %s", rule.matchRegExp)
+                    console.log("wikiparser.js 129 Cd.K matchIndex: %s", matchIndex)
+                    console.log("wikiparser.js 130 Cd.K self.source.slice(matchIndex): %s", self.source.slice(matchIndex))
+                }
+            }
+            rulesInfo.push({
 				rule: rule,
 				matchIndex: matchIndex
 			});
