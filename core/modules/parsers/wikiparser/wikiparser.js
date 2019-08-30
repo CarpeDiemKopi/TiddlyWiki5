@@ -119,7 +119,16 @@ WikiParser.prototype.instantiateRules = function(classes,type,startPos) {
 		rule.init(self);
 		var matchIndex = rule.findNextMatch(startPos);
 		if(matchIndex !== undefined) {
-			rulesInfo.push({
+            if (rule.matchRegExp !== undefined) {
+                // search for string "npp" in rule.matchRegExp.source
+                if (rule.matchRegExp.source.search("npp:") > -1) {
+                    debugger
+                    console.log("wikiparser.js 126 Cd.K rule.matchRegExp: %s", rule.matchRegExp)
+                    console.log("wikiparser.js 127 Cd.K matchIndex: %s", matchIndex)
+                    console.log("wikiparser.js 128 Cd.K self.source.slice(matchIndex): %s", self.source.slice(matchIndex))
+                }
+            }
+            rulesInfo.push({
 				rule: rule,
 				matchIndex: matchIndex
 			});

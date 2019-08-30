@@ -28,8 +28,8 @@ exports.init = function(parser) {
 	// Regexp to match
 	// this.matchRegExp = /~?(?:file|http|https|mailto|ftp|irc|news|data|skype):[^\s<>{}\[\]`|"\\^]+(?:\/|\b)/mg;
     // https://stackoverflow.com/questions/185510/how-can-i-concatenate-regex-literals-in-javascript
-    var ext1 = new RegExp(/~?(?:file|http|https|mailto|ftp|irc|news|data|skype):[^\s<>{}\[\]`|"\\^]+(?:\/|\b)/mg)
-    var ext2 = new RegExp(/\bnpp:[^ (){}\]\["'!,;`´]+\b)
+    var ext1 = /~?(?:file|http|https|mailto|ftp|irc|news|data|skype):[^\s<>{}\[\]`|"\\^]+(?:\/|\b)/mg
+    var ext2 = /\bnpp:[^ (){}\]\["'!,;`´]+\b/
     var flags = (ext1.flags + ext2.flags).split("").sort().join("").replace(/(.)(?=.*\1)/g, "")
     this.matchRegExp = new RegExp(ext1.source + "|" + ext2.source, flags);
 };
