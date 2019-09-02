@@ -34,19 +34,36 @@ exports.parse = function() {
 	var text = this.match[1],
 		link = this.match[2] || text;
 	if($tw.utils.isLinkExternal(link)) {
-		return [{
-			type: "element",
-			tag: "a",
-			attributes: {
-				href: {type: "string", value: link},
-				"class": {type: "string", value: "tc-tiddlylink-external"},
-				target: {type: "string", value: "_blank"},
-				rel: {type: "string", value: "noopener noreferrer"}
-			},
-			children: [{
-				type: "text", text: text
-			}]
-		}];
+        if($tw.utils.isLinkCustomURI(link)){
+            return [{
+                type: "element",
+                tag: "a",
+                attributes: {
+                    href: {type: "string", value: link},
+                    "class": {type: "string", value: "tc-tiddlylink-external"},
+                    target: {type: "string", value: "_space"},
+                    rel: {type: "string", value: "noopener noreferrer"}
+                },
+                children: [{
+                    type: "text", text: text
+                }]
+            }];
+        }
+        else {
+            return [{
+                type: "element",
+                tag: "a",
+                attributes: {
+                    href: {type: "string", value: link},
+                    "class": {type: "string", value: "tc-tiddlylink-external"},
+                    target: {type: "string", value: "_blank"},
+                    rel: {type: "string", value: "noopener noreferrer"}
+                },
+                children: [{
+                    type: "text", text: text
+                }]
+            }];
+        }
 	} else {
 		return [{
 			type: "link",
