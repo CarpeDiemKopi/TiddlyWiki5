@@ -41,19 +41,36 @@ exports.parse = function() {
 	if(this.match[0].substr(0,1) === "~") {
 		return [{type: "text", text: this.match[0].substr(1)}];
 	} else {
-		return [{
-			type: "element",
-			tag: "a",
-			attributes: {
-				href: {type: "string", value: this.match[0]},
-				"class": {type: "string", value: "tc-tiddlylink-external"},
-				target: {type: "string", value: "_blank"},
-				rel: {type: "string", value: "noopener noreferrer"}
-			},
-			children: [{
-				type: "text", text: this.match[0]
-			}]
-		}];
+        if(this.match[0].substr(0,4) === "npp:") {
+           return [{
+                type: "element",
+                tag: "a",
+                attributes: {
+                    href: {type: "string", value: this.match[0]},
+                    "class": {type: "string", value: "tc-tiddlylink-external"},
+                    target: {type: "string", value: "_self"},
+                    rel: {type: "string", value: "noopener noreferrer"}
+                },
+                children: [{
+                    type: "text", text: this.match[0]
+                }]
+            }];
+        }
+        else {
+            return [{
+                type: "element",
+                tag: "a",
+                attributes: {
+                    href: {type: "string", value: this.match[0]},
+                    "class": {type: "string", value: "tc-tiddlylink-external"},
+                    target: {type: "string", value: "_blank"},
+                    rel: {type: "string", value: "noopener noreferrer"}
+                },
+                children: [{
+                    type: "text", text: this.match[0]
+                }]
+            }];
+        }
 	}
 };
 
