@@ -29,7 +29,7 @@ exports.init = function(parser) {
 	// this.matchRegExp = /~?(?:file|http|https|mailto|ftp|irc|news|data|skype):[^\s<>{}\[\]`|"\\^]+(?:\/|\b)/mg;
     // https://stackoverflow.com/questions/185510/how-can-i-concatenate-regex-literals-in-javascript
     var ext1 = /~?(?:file|http|https|mailto|ftp|irc|news|data|skype):[^\s<>{}\[\]`|"\\^]+(?:\/|\b)/mg
-    var ext2 = /\bnpp:[^\s]+\b/
+    var ext2 = /\b(?:npp|xpp):[^\s<>{}\[\]`|"^]+\b/
     var flags = (ext1.flags + ext2.flags).split("").sort().join("").replace(/(.)(?=.*\1)/g, "")
     this.matchRegExp = new RegExp(ext1.source + "|" + ext2.source, flags);
 };
@@ -41,36 +41,25 @@ exports.parse = function() {
 	if(this.match[0].substr(0,1) === "~") {
 		return [{type: "text", text: this.match[0].substr(1)}];
 	} else {
-        if(this.match[0].substr(0,4) === "npp:") {
-           return [{
-                type: "element",
-                tag: "a",
-                attributes: {
-                    href: {type: "string", value: this.match[0]},
-                    "class": {type: "string", value: "tc-tiddlylink-external"},
-                    target: {type: "string", value: "_self"},
-                    rel: {type: "string", value: "noopener noreferrer"}
-                },
-                children: [{
-                    type: "text", text: this.match[0]
-                }]
-            }];
+        var result = [{
+            type: "element",
+            tag: "a",
+            attributes: {
+                href: {type: "string", value: this.match[0]},
+                "class": {type: "string", value: "tc-tiddlylink-external"},
+                target: {type: "string", value: "_blank"},
+                rel: {type: "string", value: "noopener noreferrer"}
+            },
+            children: [{
+                type: "text", text: this.match[0]
+            }]
+        }];
+        var ext2 = /\b(?:npp|xpp):[^\s<>{}\[\]`|"^]+\b/
+        if(ext2.exec(this.match[0])) {
+            // open in same browser tab/window
+            result[0].attributes.target.value = "_self"
         }
-        else {
-            return [{
-                type: "element",
-                tag: "a",
-                attributes: {
-                    href: {type: "string", value: this.match[0]},
-                    "class": {type: "string", value: "tc-tiddlylink-external"},
-                    target: {type: "string", value: "_blank"},
-                    rel: {type: "string", value: "noopener noreferrer"}
-                },
-                children: [{
-                    type: "text", text: this.match[0]
-                }]
-            }];
-        }
+        return result;
 	}
 };
 

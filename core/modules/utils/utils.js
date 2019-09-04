@@ -560,18 +560,9 @@ exports.escapeRegExp = function(s) {
 exports.isLinkExternal = function(to) {
     // https://stackoverflow.com/questions/185510/how-can-i-concatenate-regex-literals-in-javascript
     var ext1 = /^(?:file|http|https|mailto|ftp|irc|news|data|skype):[^\s<>{}\[\]`|"\\^]+(?:\/|\b)/i
-    var ext2 = /\bnpp:[^\s]+\b/i
+    var ext2 = /\b(?:npp|xpp):[^\s<>{}\[\]`|"^]+\b/i
     var flags = (ext1.flags + ext2.flags).split("").sort().join("").replace(/(.)(?=.*\1)/g, "")
     var externalRegExp  = new RegExp(ext1.source + "|" + ext2.source, flags);
-    return externalRegExp.test(to);
-};
-
-exports.isLinkCustomURI = function(to) {
-    // https://stackoverflow.com/questions/185510/how-can-i-concatenate-regex-literals-in-javascript
-    var ext1 = /\bnpp:[^\s]+\b/i
-    // var flags = (ext1.flags + ext2.flags).split("").sort().join("").replace(/(.)(?=.*\1)/g, "")
-    var flags = "i"
-    var externalRegExp  = new RegExp(ext1.source, flags);
     return externalRegExp.test(to);
 };
 

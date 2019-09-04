@@ -34,36 +34,26 @@ exports.parse = function() {
 	var text = this.match[1],
 		link = this.match[2] || text;
 	if($tw.utils.isLinkExternal(link)) {
-        if($tw.utils.isLinkCustomURI(link)){
-            return [{
-                type: "element",
-                tag: "a",
-                attributes: {
-                    href: {type: "string", value: link},
-                    "class": {type: "string", value: "tc-tiddlylink-external"},
-                    target: {type: "string", value: "_self"},
-                    rel: {type: "string", value: "noopener noreferrer"}
-                },
-                children: [{
-                    type: "text", text: text
-                }]
-            }];
+        var result = [{
+            type: "element",
+            tag: "a",
+            attributes: {
+                href: {type: "string", value: link},
+                "class": {type: "string", value: "tc-tiddlylink-external"},
+                target: {type: "string", value: "_blank"},
+                rel: {type: "string", value: "noopener noreferrer"}
+            },
+            children: [{
+                type: "text", text: text
+            }]
+        }];
+        // check custom URI
+        var ext2 = /\b(?:npp|xpp):[^\s<>{}\[\]`|"^]+\b/
+        if(ext2.exec(link)) {
+            // open in same browser tab/window
+            result[0].attributes.target.value = "_self"
         }
-        else {
-            return [{
-                type: "element",
-                tag: "a",
-                attributes: {
-                    href: {type: "string", value: link},
-                    "class": {type: "string", value: "tc-tiddlylink-external"},
-                    target: {type: "string", value: "_blank"},
-                    rel: {type: "string", value: "noopener noreferrer"}
-                },
-                children: [{
-                    type: "text", text: text
-                }]
-            }];
-        }
+        return result;
 	} else {
 		return [{
 			type: "link",
