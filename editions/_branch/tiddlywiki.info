@@ -1,0 +1,13 @@
+{
+	"description": "Empty branch edition",
+	"plugins": [
+	],
+	"themes": [
+		"tiddlywiki/vanilla",
+		"tiddlywiki/snowwhite"
+	],
+	"build": {
+		"index": [
+			"--rendertiddler","$:/core/save/all","escape.html","text/plain"],
+    }
+}
