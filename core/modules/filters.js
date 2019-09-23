@@ -46,6 +46,10 @@ function parseFilterOperation(operators,filterString,p) {
 			// The raw suffix for older filters
 			operator.suffix = operator.operator.substring(colon + 1);
 			operator.operator = operator.operator.substring(0,colon) || "field";
+            if (operator.operator == "regexp") {
+                // Cd.K
+                console.log("filter.js 51 operator 'regexp'")
+            }
 			// The processed suffix for newer filters
 			operator.suffixes = [];
 			$tw.utils.each(operator.suffix.split(":"),function(subsuffix) {
@@ -71,6 +75,11 @@ function parseFilterOperation(operators,filterString,p) {
 				break;
 			case "[": // Square brackets
 				nextBracketPos = filterString.indexOf("]",p);
+                // Cd.K
+                if (operator.operator == "regexp") {
+                    // Cd.K
+                    nextBracketPos = filterString.lastIndexOf("]]");
+                }
 				break;
 			case "<": // Angle brackets
 				operator.variable = true;
@@ -117,9 +126,17 @@ exports.parseFilter = function(filterString) {
 	filterString = filterString || "";
 	var results = [], // Array of arrays of operator nodes {operator:,operand:}
 		p = 0, // Current position in the filter string
-		match;
+		match,
+        matchregexp;
 	var whitespaceRegExp = /(\s+)/mg,
-		operandRegExp = /((?:\+|\-|~|=)?)(?:(\[)|(?:"([^"]*)")|(?:'([^']*)')|([^\s\[\]]+))/mg;
+		operandRegExp = /((?:\+|\-|~|=)?)(?:(\[)|(?:"([^"]*)")|(?:'([^']*)')|([^\s\[\]]+))/mg,
+        // Cd.K check regex:
+        regexpRegExp = /\[regexp:/mg;
+        // ?=? several regexp: conditions with or and possible??
+        if (regexpRegExp.exec(filterString)) {
+            console.log("Cd.K 'regexp:' in filter case");
+        }
+
 	while(p < filterString.length) {
 		// Skip any whitespace
 		whitespaceRegExp.lastIndex = p;
@@ -132,7 +149,14 @@ exports.parseFilter = function(filterString) {
 			operandRegExp.lastIndex = p;
 			match = operandRegExp.exec(filterString);
 			if(!match || match.index !== p) {
-				throw $tw.language.getString("Error/FilterSyntax");
+                // Cd.K
+                matchregexp = regexpRegExp.exec(filterString);
+                if (!matchregexp) {
+                    throw $tw.language.getString("Error/FilterSyntax");
+                }
+                else {
+                    console.log("Cd.K found regexp: condition in filter")
+                }
 			}
 			var operation = {
 				prefix: "",
