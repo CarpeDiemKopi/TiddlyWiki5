@@ -52,7 +52,7 @@ exports.types = {block: true};
 exports.init = function(parser) {
 	this.parser = parser;
 	// Regexp to match
-	this.matchRegExp = /([\*#;:>\.]+)|([ ]{2,}$)/mg; // Cd.K dot, double blank
+	this.matchRegExp = /([\*#;:>]+)/mg;
 };
 
 var listTypes = {
@@ -60,9 +60,7 @@ var listTypes = {
 	"#": {listTag: "ol", itemTag: "li"},
 	";": {listTag: "dl", itemTag: "dt"},
 	":": {listTag: "dl", itemTag: "dd"},
-	">": {listTag: "blockquote", itemTag: "p"},
-	".": {listTag: "p", itemTag: "p"}, // Cd.K dot
-	" ": {listTag: "p", itemTag: "p"} // Cd.K blank
+	">": {listTag: "blockquote", itemTag: "p"}
 };
 
 /*
@@ -74,7 +72,7 @@ exports.parse = function() {
 	// Cycle through the items in the list
 	while(true) {
 		// Match the list marker
-		var reMatch = /([\*#;:>\.]+)|([ ]{2,}$)/mg; // Cd.K dot, double blank
+		var reMatch = /([\*#;:>]+)/mg;
 		reMatch.lastIndex = this.parser.pos;
 		var match = reMatch.exec(this.parser.source);
 		if(!match || match.index !== this.parser.pos) {
@@ -82,13 +80,6 @@ exports.parse = function() {
 		}
 		// Check whether the list type of the top level matches
 		var listInfo = listTypes[match[0].charAt(0)];
-		// Cd.K
-		if (match[0].charAt(0) == ".") {
-			console.log("Cd.K wikparser/rules/list.js 87 found leading '.' case")
-		}
-		if (match[0].charAt(0) == " ") {
-			console.log("Cd.K wikparser/rules/list.js 90 found trailing blank case")
-		}
 		if(listStack.length > 0 && listStack[0].tag !== listInfo.listTag) {
 			break;
 		}
