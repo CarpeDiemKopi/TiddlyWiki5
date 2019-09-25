@@ -1,5 +1,5 @@
 /*\
-title: $:/core/modules/parsers/wikiparser/rules/list.js
+title: $:/plugins/cdk/linebreak/patch/source/list.js
 type: application/javascript
 module-type: wikirule
 

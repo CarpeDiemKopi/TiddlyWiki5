@@ -1,0 +1,12 @@
+title: $:/plugins/cdk/linebreak/readme
+
+;This experimental plugin provides a new feature to automate linebreaks in paragraphs.
+*period rule
+*blanks rule
+
+;See the following threads:
+* https://groups.google.com/forum/#!topic/tiddlywiki/q3FHADrGjOA
+* https://groups.google.com/forum/#!topic/tiddlywiki/l-OSoKg4j4E
+* https://groups.google.com/forum/#!msg/tiddlywikidev/cf0D9mbvi8g/cUb2-5rUBgAJ
+* https://groups.google.com/forum/#!searchin/tiddlywiki/leading$20period%7Csort:date/tiddlywiki/g06OJ-MPYoM/Ut92VvT8BgAJ
+
